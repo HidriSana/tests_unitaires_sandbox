@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace App\Tests;
 
 use App\Addition;
+use InvalidArgumentException;
+use PHPUnit\Event\InvalidArgumentException as EventInvalidArgumentException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertSame;
-
+use function PHPUnit\Framework\returnSelf;
 
 final class AdditionTest extends Testcase
 {
@@ -57,7 +59,7 @@ final class AdditionTest extends Testcase
             assertSame($a[2], $a[0] + $a[1]);
         }
     }*/
-    public static function additionProvider(): array
+    /*public static function additionProvider(): array
     {
         return [
             [0, 0, 0],
@@ -71,5 +73,16 @@ final class AdditionTest extends Testcase
     public function testAdd(int $a, int $b, int $expected): void
     {
         $this->assertSame($expected, $a + $b);
+    }*/
+    public function testException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->tripleInteger('3');
+    }
+    function tripleInteger($int)
+    {
+        if (!is_int($int))
+            throw new InvalidArgumentException('tripleInteger function only accepts integers. Input was: ' . $int);
+        return $int * 3;
     }
 }
